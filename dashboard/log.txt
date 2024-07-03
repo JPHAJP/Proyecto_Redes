@@ -1,0 +1,15 @@
+
+Hum: 0, Mov: 0, Dist: 0, Status: 2, Time: 00:10:00
+Hum: 0, Mov: 0, Dist: 0, Status: 2, Time: 00:00:00
+Hum: 50, Mov: 10, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 50, Mov: 1, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 50, Mov: 0, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 20, Mov: 0, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 10, Mov: 0, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 10, Mov: 0, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 10, Mov: 0, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 120, Mov: 0, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 100, Mov: 0, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 90, Mov: 0, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 90, Mov: 1, Dist: 10, Status: 2, Time: 00:00:00
+Hum: 90, Mov: 1, Dist: 2, Status: 2, Time: 00:00:00
