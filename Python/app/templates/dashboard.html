@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta http-equiv="refresh" content="5">
+<head>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .container-semaphore {
+      text-align: center;
+    }
+    .semaphore {
+      width: 180px;
+      height: 100px;
+      background-color: #333;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin: 20px auto;
+      padding: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    .status {
+        font-size: 15px;
+        color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    .status-activo { background-color: green; }
+    .status-detenido { background-color: orange; }
+    .status-terminado { background-color: red; }
+    .contenedor {
+      width: 190px; 
+      height: 100%; 
+      background-color: #333; 
+      border-radius: 10px; 
+      transition: background-color 0.5s;
+    }
+    .techo {
+      position: relative;
+      left: 50%; 
+      transform: translateX(-50%); 
+      width: 90%; 
+      height: 30px; 
+      background-color: #1f2122; 
+      border-radius: 10px;
+    }
+    .foco {
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff;
+      border-radius: 0 0 50% 50%;
+      box-shadow: 0 0 10px 5px yellow;
+      transition: opacity 0.5s;
+    }
+    .cama {
+      position: absolute;
+      top: 100px;
+      left: 50%; 
+      transform: translateX(-50%);
+      width: 150px; 
+      height: 110px;
+      background-color: #ec6090; 
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 0 10px 5px rgba(0,0,0,0.5); 
+    }
+    .almohada {
+      width: 70px;
+      height: 30px;
+      background-color: #fff;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+      position: absolute;
+      top: 10px;
+    }
+    .almohada.izquierda {
+      left: 3px;
+    }
+    .almohada.derecha {
+      right: 3px;
+    }
+  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Smart Home</title>
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/templatemo-cyborg-gaming.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+</head>
+<body>
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="/dashboard" class="logo">
+              <img src="{{ url_for('static', filename='images/Smart_Home_logo.png') }}" alt="">
+            </a>
+            <ul class="nav">
+              <li><a href="/">Cerrar Sesion</a></li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+          <div class="main-banner">
+            <div class="row">
+              <div class="col-lg-7">
+                <div class="header-text">
+                  <h6>Sistema de domotica para el hogar</h6>
+                  <br>
+                  <h4><em>Dashboard</em> Sensores</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="most-popular">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="heading-section">
+                  <h4>Menu de Sensores</h4>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6 col-sm-6">
+                    <div class="item">
+                      <div class="container">
+                          <div class="time" data-time="{{ time }}"></div>
+                          <div class="status status-{{ translated_status }}" data-status="{{ translated_status }}">Status: {{ translated_status }}</div>
+                      </div>
+                      <h4>Cocina</h4>                  
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-sm-6">
+                    <div class="item">
+                      <div class="container-semaphore">
+                        <div class="semaphore">
+                        {% if dist <= 2 %}
+                            <div class="light red" data-light-red="{{ 'true' if dist <= 2 else 'false' }}" style="background-color: {{ 'red' if dist <= 2 else 'gray' }};"></div>
+                        {% elif 2 < dist <= 7 %}
+                            <div class="light yellow" data-light-yellow="{{ 'true' if 2 < dist <= 7 else 'false' }}" style="background-color: {{ 'yellow' if 2 < dist <= 7 else 'gray' }};"></div>
+                        {% else %}
+                            <div class="light green" data-light-green="{{ 'true' if dist > 7 else 'false' }}" style="background-color: {{ 'green' if dist > 7 else 'gray' }};"></div>
+                        {% endif %}
+
+                          <!-- <div class="light red" data-light-red="{{ 'true' if dist <= 2 else 'false' }}" style="background-color: {{ 'red' if dist <= 2 else 'gray' }};"></div>
+                          <div class="light yellow" data-light-yellow="{{ 'true' if 2 < dist <= 7 else 'false' }}" style="background-color: {{ 'yellow' if 2 < dist <= 7 else 'gray' }};"></div>
+                          <div class="light green" data-light-green="{{ 'true' if dist > 7 else 'false' }}" style="background-color: {{ 'green' if dist > 7 else 'gray' }};"></div> -->
+                        </div>
+                        <div class="text-semaphore" data-dist="{{ dist }}">Distancia: {{ dist }} cm</div>
+                      </div>
+                      <h4>Cochera</h4>                  
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-sm-6">
+                    <div class="item">
+                      <div class="thermometer">
+                        <div class="thermometer-fill" id="thermometer-fill" data-hum="{{ hum }}" style="height: {{ hum }}%;"></div>
+                        <div class="thermometer-scale">
+                          <div>100%</div>
+                          <div>80%</div>
+                          <div>60%</div>
+                          <div>40%</div>
+                          <div>20%</div>
+                          <div>0%</div>
+                        </div>
+                      </div>
+                      <div class="humidity-value" id="humidity-value" data-humidity="{{ hum }}">
+                        Humedad: {{ hum }}%
+                      </div>
+                      <script>
+                          var humedad = document.getElementById('thermometer-fill').getAttribute('data-hum');
+                          var thermometerFill = document.getElementById('thermometer-fill');
+                          thermometerFill.style.height = humedad + '%';
+                          if (humedad >= 80) {
+                            thermometerFill.style.backgroundColor = '#0B3D91'; 
+                          } else if (humedad >= 60) {
+                            thermometerFill.style.backgroundColor = '#4682B4'; 
+                          } else if (humedad >= 40) {
+                            thermometerFill.style.backgroundColor = '#87CEEB'; 
+                          } else if (humedad >= 20) {
+                            thermometerFill.style.backgroundColor = '#FFD700'; 
+                          } else {
+                            thermometerFill.style.backgroundColor = '#FF4500'; 
+                          }
+                          var humidityValue = document.getElementById('humidity-value');
+                          humidityValue.textContent = 'Humedad: ' + humedad + '%';
+                      </script>
+                      <h4>Baño</h4>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-sm-6">
+                    <div class="item">
+                      <div class="contenedor" style="background-color: {{ 'yellow' if mov == 1 else '#555' }};">
+                        <div class="techo">
+                          <h2 style="text-align: center; color: #ec6090;font-size: 15px;">
+                            {{ 'Cuarto encendido' if mov == 1 else 'Cuarto apagado' }}
+                          </h2>
+                        </div>
+                        <div class="foco" style="opacity: {{ '1' if mov == 1 else '0.1' }};"></div>
+                          <div class="cama" style="opacity: {{ '1' if mov != 1 else '0.5' }};">
+                            <div class="almohada izquierda"></div>
+                            <div class="almohada derecha"></div>
+                          </div>
+                        </div>
+                        <h4>Cuarto</h4>
+                  </div>
+                </div>
+                <p>{{ message }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Proyecto Final Redes Digitales de Datos 2024
+            <br>Máximo Arenas - Mary Tere Füguemann - Jose Pablo Hernández - Dirk Anton Topcic </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/isotope.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/owl-carousel.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+</body>
+</html>

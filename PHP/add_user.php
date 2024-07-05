@@ -8,14 +8,3 @@
   }
 
 ?>
-
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello World</title>
-    <meta http-equiv="refresh" content="0; url=../">
-  </head>
-  <body>
-  </body>
-</html>
