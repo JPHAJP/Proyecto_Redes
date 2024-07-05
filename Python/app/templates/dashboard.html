@@ -27,6 +27,76 @@
       padding: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
     }
+    .light {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    .light.green {
+      background-color: {{ color_verde }};
+    }
+    .light.yellow {
+      background-color: {{ color_amarillo }};
+    }
+    .light.red {
+      background-color: {{ color_rojo }};
+    }
+    .text-semaphore {
+      text-align: center;
+      color: #ec6090;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .sensor-container {
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 200px;
+    }
+    .thermometer {
+      width: 35px;
+      height: 150px;
+      border: 2px solid #fff;
+      border-radius: 25px;
+      position: relative;
+      background: #333;
+      margin: 0 auto;
+    }
+    .thermometer-fill {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      border-radius: 0 0 25px 25px;
+    }
+    .thermometer-scale {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .thermometer-scale div {
+      text-align: center;
+      margin-right: 5px;
+      font-size: 0.5em;
+      color: #fff;
+    }
+    .humidity-value {
+      text-align: center;
+      color: #ec6090;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .time {
+        font-size: 38px;
+        margin-bottom: 20px;
+        color: #fff;
+    }
     .status {
         font-size: 15px;
         color: #fff;
@@ -156,8 +226,8 @@
                   <div class="col-lg-6 col-sm-6">
                     <div class="item">
                       <div class="container">
-                          <div class="time" data-time="{{ time }}"></div>
-                          <div class="status status-{{ translated_status }}" data-status="{{ translated_status }}">Status: {{ translated_status }}</div>
+                          <div class="time">{{ time }}</div>
+                          <div class="status status-{{ translated_status }}">Status: {{ translated_status }}</div>
                       </div>
                       <h4>Cocina</h4>                  
                     </div>
@@ -166,19 +236,11 @@
                     <div class="item">
                       <div class="container-semaphore">
                         <div class="semaphore">
-                        {% if dist <= 2 %}
-                            <div class="light red" data-light-red="{{ 'true' if dist <= 2 else 'false' }}" style="background-color: {{ 'red' if dist <= 2 else 'gray' }};"></div>
-                        {% elif 2 < dist <= 7 %}
-                            <div class="light yellow" data-light-yellow="{{ 'true' if 2 < dist <= 7 else 'false' }}" style="background-color: {{ 'yellow' if 2 < dist <= 7 else 'gray' }};"></div>
-                        {% else %}
-                            <div class="light green" data-light-green="{{ 'true' if dist > 7 else 'false' }}" style="background-color: {{ 'green' if dist > 7 else 'gray' }};"></div>
-                        {% endif %}
-
-                          <!-- <div class="light red" data-light-red="{{ 'true' if dist <= 2 else 'false' }}" style="background-color: {{ 'red' if dist <= 2 else 'gray' }};"></div>
-                          <div class="light yellow" data-light-yellow="{{ 'true' if 2 < dist <= 7 else 'false' }}" style="background-color: {{ 'yellow' if 2 < dist <= 7 else 'gray' }};"></div>
-                          <div class="light green" data-light-green="{{ 'true' if dist > 7 else 'false' }}" style="background-color: {{ 'green' if dist > 7 else 'gray' }};"></div> -->
+                          <div class="light red" style="background-color: {{ color_rojo }};"></div>
+                          <div class="light yellow" style="background-color: {{ color_amarillo }};"></div>
+                          <div class="light green" style="background-color: {{ color_verde }};"></div>
                         </div>
-                        <div class="text-semaphore" data-dist="{{ dist }}">Distancia: {{ dist }} cm</div>
+                        <div class="text-semaphore">Distancia: {{ dist }} cm</div>
                       </div>
                       <h4>Cochera</h4>                  
                     </div>
@@ -186,7 +248,7 @@
                   <div class="col-lg-6 col-sm-6">
                     <div class="item">
                       <div class="thermometer">
-                        <div class="thermometer-fill" id="thermometer-fill" data-hum="{{ hum }}" style="height: {{ hum }}%;"></div>
+                        <div class="thermometer-fill" id="thermometer-fill" style="height: {{ hum }}%;"></div>
                         <div class="thermometer-scale">
                           <div>100%</div>
                           <div>80%</div>
@@ -196,11 +258,11 @@
                           <div>0%</div>
                         </div>
                       </div>
-                      <div class="humidity-value" id="humidity-value" data-humidity="{{ hum }}">
+                      <div class="humidity-value" id="humidity-value">
                         Humedad: {{ hum }}%
                       </div>
                       <script>
-                          var humedad = document.getElementById('thermometer-fill').getAttribute('data-hum');
+                          var humedad = {{ hum }};
                           var thermometerFill = document.getElementById('thermometer-fill');
                           thermometerFill.style.height = humedad + '%';
                           if (humedad >= 80) {

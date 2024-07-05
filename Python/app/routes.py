@@ -74,7 +74,18 @@ def dashboard():
     
     translated_status = translate_status(last_log['status'])
     
-    return render_template('dashboard.html', hum=last_log['hum'], mov=last_log['mov'], dist=last_log['dist'], status=last_log['status'], time=last_log['time'], translated_status=translated_status, message='Mostrando datos actuales')
+    color_verde = 'gray'
+    color_amarillo = 'gray'
+    color_rojo = 'gray'
+    
+    if last_log['dist'] > 7:
+        color_verde = 'green'
+    elif 2 < last_log['dist'] <= 7:
+        color_amarillo = 'yellow'
+    elif last_log['dist'] <= 2:
+        color_rojo = 'red'
+    print(translated_status)
+    return render_template('dashboard.html', hum=last_log['hum'], mov=last_log['mov'], dist=last_log['dist'], status=last_log['status'], time=last_log['time'], translated_status=translated_status, color_verde=color_verde, color_amarillo=color_amarillo, color_rojo=color_rojo, message='Mostrando datos actuales')
 
 @app.route('/update_hum', methods=['POST'])
 def update_hum():
@@ -156,11 +167,11 @@ def get_logs():
     return jsonify(logs)
 
 def translate_status(status):
-    if status == '0':
+    if status ==0:
         return 'activo'
-    elif status == '1':
+    elif status == 1:
         return 'detenido'
-    elif status == '2':
+    elif status == 2:
         return 'terminado'
     else:
         return 'desconocido'
